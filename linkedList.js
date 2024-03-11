@@ -20,7 +20,7 @@ export class LinkedList
     }
 
     listNodeAppend(nodeObjectAdd)
-    { 
+    {
         if (this.head.next === null)
         {
             this.head.next = nodeObjectAdd;
@@ -84,7 +84,7 @@ export class LinkedList
     }
 
     findNodeAtIndex(indexValue)
-    { 
+    {
         let nodeObjectTraverse = this.head;
         const checkSize = LinkedList.findSizeInternal(nodeObjectTraverse);
         if (checkSize < indexValue)
@@ -106,52 +106,97 @@ export class LinkedList
         this.tail.previous.next = null;
         this.tail = this.tail.previous;
     }
-    
-    contains(valueToSearch){
+
+    contains(valueToSearch)
+    {
         let nodeObjectTraverse = this.head;
-        while(nodeObjectTraverse.next !== null){
-            if(valueToSearch === nodeObjectTraverse.key){
+        while (nodeObjectTraverse.next !== null)
+        {
+            if (valueToSearch === nodeObjectTraverse.key)
+            {
                 return true;
             }
             nodeObjectTraverse = nodeObjectTraverse.next;
         }
 
-        if(valueToSearch === nodeObjectTraverse.key){
+        if (valueToSearch === nodeObjectTraverse.key)
+        {
             return true;
         }
         return false;
     }
 
-    find(valueToSearch){
+    find(valueToSearch)
+    {
         let nodeObjectTraverse = this.head;
         let index = 1;
-        while(nodeObjectTraverse.next !== null){
-            if(valueToSearch === nodeObjectTraverse.key){
+        while (nodeObjectTraverse.next !== null)
+        {
+            if (valueToSearch === nodeObjectTraverse.key)
+            {
                 return index;
             }
             nodeObjectTraverse = nodeObjectTraverse.next;
             index++;
         }
 
-        if(valueToSearch === nodeObjectTraverse.key){
+        if (valueToSearch === nodeObjectTraverse.key)
+        {
             return index;
         }
 
         return null;
     }
 
-    toString(){
+    toString()
+    {
         let stringOfValues = '';
         let nodeObjectTraverse = this.head;
         let index = 1;
-        while(nodeObjectTraverse.next !== null){
+        while (nodeObjectTraverse.next !== null)
+        {
             let stringValue = `(${nodeObjectTraverse.key}) -> `
             stringOfValues += stringValue;
             nodeObjectTraverse = nodeObjectTraverse.next;
         }
-        stringOfValues = stringOfValues.concat('',`(${nodeObjectTraverse.key})`)
+        stringOfValues = stringOfValues.concat('', `(${nodeObjectTraverse.key})`)
         return stringOfValues;
 
     }
 
+
+    removeNodeFromList(indexValue)
+    {
+        let nodeObjectToRemove = this.head;
+        let objectTraverseIndex = 1;
+        let tailIndex = this.findSize();
+        if (indexValue === objectTraverseIndex)
+        {
+            this.head = this.head.next;
+            this.head.previous = null;
+            return;
+        }
+        if(indexValue === tailIndex){
+            this.tail = this.tail.previous;
+            this.tail.next = null;
+            return;
+        }
+
+        while (objectTraverseIndex !== indexValue)
+        {
+            nodeObjectToRemove = nodeObjectToRemove.next;
+            objectTraverseIndex++;
+            if (objectTraverseIndex === indexValue)
+            {
+                let nodeBeforeObject = nodeObjectToRemove.previous
+                let nodeAfterObject = nodeObjectToRemove.next
+                nodeBeforeObject.next = nodeAfterObject
+                nodeAfterObject.previous = nodeBeforeObject;
+                return;
+            }
+        }
+
+    }
+
 }
+

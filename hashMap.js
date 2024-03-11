@@ -1,12 +1,9 @@
 import { Node } from "./linkedList.js";
 import { LinkedList } from "./linkedList.js";
 
-
-const testIndex = 644
-
 class HashMap
 {
-    #arrayCapacity = 16;
+    #arrayCapacity = 20;
     #loadFactor = .75;
     #hashArray = [];
 
@@ -31,7 +28,7 @@ class HashMap
     set(key, value)
     {
         const arrayIndex = this.hash(key); // 1. This will prevent it from creating at a index greater than array capacity as anything % arrayCapacity > arrayCapacity itself
-        if (this.#hashArray[arrayIndex] === undefined)
+        if (this.isUndefined(arrayIndex))
         {
             this.#hashArray[arrayIndex] = new LinkedList(new Node(key, value))
             if(this.#checkLoad()){
@@ -50,19 +47,37 @@ class HashMap
 
     get(key){
         const arrayIndex = this.hash(key); // there is an issue here if the arrayCapacity increases the calculation will screw up as a result i wont find the value even if it is present issue affects set() too
+        if (this.isUndefined(arrayIndex)){
+            return false;
+        }
         if (this.#hashArray[arrayIndex].contains(key)){
             return this.#hashArray[arrayIndex].findNodeAtIndex(this.#hashArray[arrayIndex].find(key)).data;
         }
         return null;
     }
 
-    printPrivateVariable()
-    {
-        for (let index = 0; index < this.#arrayCapacity; index++)
-        {
-            console.log(`value at ${index} is ${this.#hashArray[index]}`)
+    has(key){
+        const arrayIndex = this.hash(key);
+        if (this.isUndefined(arrayIndex)){
+            return false;
         }
-        console.log(this.#arrayCapacity)
+        if (this.#hashArray[arrayIndex].contains(key)){
+            return true;
+        }
+        return false;
+    }
+
+    remove(key){
+        const arrayIndex = this.hash(key);
+        
+        if(this.isUndefined(arrayIndex)){
+            return false;
+        }
+        if(this.#hashArray[arrayIndex].contains(key)){
+            this.#hashArray[arrayIndex].removeNodeFromList(this.#hashArray[arrayIndex].find(key))
+            return true;
+        }
+        return false;
     }
 
     #checkLoad()
@@ -82,6 +97,23 @@ class HashMap
         }
         return false;
     }
+
+    isUndefined(arrayIndex){
+        if (this.#hashArray[arrayIndex] === undefined){
+            return true;
+        }
+        return false;
+    }
+
+    printPrivateVariable()
+    {
+        // for (let index = 0; index < this.#arrayCapacity; index++)
+        // {
+        //     console.log(`value at ${index} is ${this.#hashArray[index]}`)
+        // }
+        // console.log(this.#arrayCapacity)
+        console.log(this.#hashArray[16]);
+    }
 }
 
 
@@ -90,9 +122,12 @@ const stringMapTest = new HashMap();
 stringMapTest.set('carlos', 'I am the old value.')
 stringMapTest.set('loscar', 'I am the old value.')
 stringMapTest.set('carlos', 'I am the new value.')
-stringMapTest.set('mooka', 'I am merely a value.')
+stringMapTest.set('raclos', 'I am a value.')
 
-console.log(stringMapTest.get('carlos'))
+// console.log(stringMapTest.get('carlos'))
+// console.log(stringMapTest.has('carlos'))
+console.log(stringMapTest.remove('acrlos'));
+
 
 // stringMapTest.printPrivateVariable();
 
