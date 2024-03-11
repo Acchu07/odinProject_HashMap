@@ -176,7 +176,8 @@ export class LinkedList
             this.head.previous = null;
             return;
         }
-        if(indexValue === tailIndex){
+        if (indexValue === tailIndex)
+        {
             this.tail = this.tail.previous;
             this.tail.next = null;
             return;
@@ -198,14 +199,37 @@ export class LinkedList
 
     }
 
-    getKeysOrValues(whatToGet){
+    getKeysOrValues(whatToGet)
+    {
         let arrayContainingValues = []
         let objectToTraverse = this.head;
-        while(objectToTraverse !== this.tail){
+        while (objectToTraverse !== this.tail)
+        {
             arrayContainingValues.push(objectToTraverse[whatToGet]);
             objectToTraverse = objectToTraverse.next;
         }
         arrayContainingValues.push(objectToTraverse[whatToGet]);
+        return arrayContainingValues;
+    }
+
+    getKeysAndValues()
+    {
+        let arrayContainingValues = []
+        let objectToTraverse = this.head;
+        while (objectToTraverse !== this.tail)
+        {
+            const miniArrayKeysAndValues = [];
+            miniArrayKeysAndValues.push(objectToTraverse.key);
+            miniArrayKeysAndValues.push(objectToTraverse.data);
+
+            arrayContainingValues.push(miniArrayKeysAndValues);
+            objectToTraverse = objectToTraverse.next;
+        }
+        const miniArrayKeysAndValues = [];
+        miniArrayKeysAndValues.push(objectToTraverse.key);
+        miniArrayKeysAndValues.push(objectToTraverse.data);
+        arrayContainingValues.push(miniArrayKeysAndValues);
+        
         return arrayContainingValues;
 
     }

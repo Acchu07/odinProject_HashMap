@@ -19,7 +19,7 @@ class HashMap
         const primeNumber = 7;
         for (let i = 0; i < key.length; i++)
         {
-            hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % this.#arrayCapacity; // ask for help mainly because if i dont modulo this with capacity i will get a value greater than array size but if i do the issue of inability to find value happens when array grows
+            hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % this.#arrayCapacity; // Location of issue if i dont modulo this with capacity i will get a value greater than array size but if i do the issue of inability to find value happens when array grows
         }
 
         return hashCode;
@@ -134,6 +134,18 @@ class HashMap
         return arrayContainingValues;
     }
 
+    entries(){
+        let entriesKeyValue = [];
+        for (let index = 0; index < this.#arrayCapacity; index++)
+        {
+            if (this.#hashArray[index] !== undefined)
+            {
+                entriesKeyValue.push(...this.#hashArray[index].getKeysAndValues())
+            }
+        }
+        return entriesKeyValue;
+    }
+
     #checkLoad()
     {
         const maxEmptyIndexesAllowed = this.#arrayCapacity - Math.round(this.#arrayCapacity * this.#loadFactor);
@@ -162,19 +174,20 @@ class HashMap
         return false;
     }
 
-    printPrivateVariable()
-    {
-        // for (let index = 0; index < this.#arrayCapacity; index++)
-        // {
-        //     console.log(`value at ${index} is ${this.#hashArray[index]}`)
-        // }
-        // console.log(this.#arrayCapacity)
-        console.log(this.#hashArray[18]);
-    }
+    // printPrivateVariable()
+    // {
+    //     for (let index = 0; index < this.#arrayCapacity; index++)
+    //     {
+    //         console.log(`value at ${index} is ${this.#hashArray[index]}`)
+    //     }
+    //     console.log(this.#arrayCapacity)
+    //     console.log(this.#hashArray[18]);
+    // }
 }
 
 
 const stringMapTest = new HashMap();
+const stringMapTest2 = new HashMap();
 
 stringMapTest.set('carlos', 'I am the old value.')
 stringMapTest.set('loscar', 'I am the old value.')
@@ -182,13 +195,14 @@ stringMapTest.set('carlos', 'I am the new value.')
 stringMapTest.set('raclos', 'I am a value.')
 stringMapTest.set('odin', 'somevalue')
 
+stringMapTest2.set('odin', 'somevalue');
 // console.log(stringMapTest.get('carlos'))
 // console.log(stringMapTest.has('carlos'))
 // console.log(stringMapTest.length());
 
 
 // stringMapTest.printPrivateVariable();
-console.log(stringMapTest.keys());
+console.log(stringMapTest.entries());
 
 
 
