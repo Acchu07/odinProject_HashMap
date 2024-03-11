@@ -198,5 +198,16 @@ export class LinkedList
 
     }
 
+    getKeysOrValues(whatToGet){
+        let arrayContainingValues = []
+        let objectToTraverse = this.head;
+        while(objectToTraverse !== this.tail){
+            arrayContainingValues.push(objectToTraverse[whatToGet]);
+            objectToTraverse = objectToTraverse.next;
+        }
+        arrayContainingValues.push(objectToTraverse[whatToGet]);
+        return arrayContainingValues;
+
+    }
 }
 

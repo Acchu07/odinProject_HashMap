@@ -31,7 +31,8 @@ class HashMap
         if (this.isUndefined(arrayIndex))
         {
             this.#hashArray[arrayIndex] = new LinkedList(new Node(key, value))
-            if(this.#checkLoad()){
+            if (this.#checkLoad())
+            {
                 this.#arrayCapacity = Math.round(this.#arrayCapacity * 1.5);
             }
             return;
@@ -45,39 +46,92 @@ class HashMap
         this.#hashArray[arrayIndex].listNodeAppend(new Node(key, value));
     }
 
-    get(key){
+    get(key)
+    {
         const arrayIndex = this.hash(key); // there is an issue here if the arrayCapacity increases the calculation will screw up as a result i wont find the value even if it is present issue affects set() too
-        if (this.isUndefined(arrayIndex)){
+        if (this.isUndefined(arrayIndex))
+        {
             return false;
         }
-        if (this.#hashArray[arrayIndex].contains(key)){
+        if (this.#hashArray[arrayIndex].contains(key))
+        {
             return this.#hashArray[arrayIndex].findNodeAtIndex(this.#hashArray[arrayIndex].find(key)).data;
         }
         return null;
     }
 
-    has(key){
+    has(key)
+    {
         const arrayIndex = this.hash(key);
-        if (this.isUndefined(arrayIndex)){
+        if (this.isUndefined(arrayIndex))
+        {
             return false;
         }
-        if (this.#hashArray[arrayIndex].contains(key)){
+        if (this.#hashArray[arrayIndex].contains(key))
+        {
             return true;
         }
         return false;
     }
 
-    remove(key){
+    remove(key)
+    {
         const arrayIndex = this.hash(key);
-        
-        if(this.isUndefined(arrayIndex)){
+
+        if (this.isUndefined(arrayIndex))
+        {
             return false;
         }
-        if(this.#hashArray[arrayIndex].contains(key)){
+        if (this.#hashArray[arrayIndex].contains(key))
+        {
             this.#hashArray[arrayIndex].removeNodeFromList(this.#hashArray[arrayIndex].find(key))
             return true;
         }
         return false;
+    }
+
+    length()
+    {
+        let totalAmountOfKeys = 0;
+        for (let index = 0; index < this.#arrayCapacity; index++)
+        {
+            if (this.#hashArray[index] !== undefined)
+            {
+                totalAmountOfKeys += this.#hashArray[index].findSize();
+            }
+        }
+        return totalAmountOfKeys;
+    }
+
+    clear(){
+        for (let index = 0; index < this.#arrayCapacity; index++)
+        {
+            this.#hashArray[index] = undefined
+        }
+    }
+
+    keys(){
+        let arrayContainingKeys = [];
+        for (let index = 0; index < this.#arrayCapacity; index++)
+        {
+            if (this.#hashArray[index] !== undefined)
+            {
+                arrayContainingKeys.push(...this.#hashArray[index].getKeysOrValues('key'))
+            }
+        }
+        return arrayContainingKeys;
+    }
+
+    values(){
+        let arrayContainingValues = [];
+        for (let index = 0; index < this.#arrayCapacity; index++)
+        {
+            if (this.#hashArray[index] !== undefined)
+            {
+                arrayContainingValues.push(...this.#hashArray[index].getKeysOrValues('data'))
+            }
+        }
+        return arrayContainingValues;
     }
 
     #checkLoad()
@@ -90,7 +144,8 @@ class HashMap
             if (this.#hashArray[index] !== undefined)
             {
                 counter++;
-                if(counter >= currentIndexesFilled){
+                if (counter >= currentIndexesFilled)
+                {
                     return true;
                 }
             }
@@ -98,8 +153,10 @@ class HashMap
         return false;
     }
 
-    isUndefined(arrayIndex){
-        if (this.#hashArray[arrayIndex] === undefined){
+    isUndefined(arrayIndex)
+    {
+        if (this.#hashArray[arrayIndex] === undefined)
+        {
             return true;
         }
         return false;
@@ -112,7 +169,7 @@ class HashMap
         //     console.log(`value at ${index} is ${this.#hashArray[index]}`)
         // }
         // console.log(this.#arrayCapacity)
-        console.log(this.#hashArray[16]);
+        console.log(this.#hashArray[18]);
     }
 }
 
@@ -123,13 +180,16 @@ stringMapTest.set('carlos', 'I am the old value.')
 stringMapTest.set('loscar', 'I am the old value.')
 stringMapTest.set('carlos', 'I am the new value.')
 stringMapTest.set('raclos', 'I am a value.')
+stringMapTest.set('odin', 'somevalue')
 
 // console.log(stringMapTest.get('carlos'))
 // console.log(stringMapTest.has('carlos'))
-console.log(stringMapTest.remove('acrlos'));
+// console.log(stringMapTest.length());
 
 
 // stringMapTest.printPrivateVariable();
+console.log(stringMapTest.keys());
+
 
 
 
