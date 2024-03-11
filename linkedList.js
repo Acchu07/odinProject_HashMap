@@ -115,7 +115,7 @@ export class LinkedList
             }
             nodeObjectTraverse = nodeObjectTraverse.next;
         }
-        
+
         if(valueToSearch === nodeObjectTraverse.key){
             return true;
         }
@@ -154,10 +154,4 @@ export class LinkedList
 
     }
 
-}
-
-
-
-export default function test(){
-    console.log('export works')
 }

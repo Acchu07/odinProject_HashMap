@@ -1,4 +1,3 @@
-import test from "./linkedList.js";
 import { Node } from "./linkedList.js";
 import { LinkedList } from "./linkedList.js";
 
@@ -23,7 +22,7 @@ class HashMap
         const primeNumber = 7;
         for (let i = 0; i < key.length; i++)
         {
-            hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % this.#arrayCapacity;
+            hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % this.#arrayCapacity; // ask for help mainly because if i dont modulo this with capacity i will get a value greater than array size but if i do the issue of inability to find value happens when array grows
         }
 
         return hashCode;
@@ -31,7 +30,7 @@ class HashMap
 
     set(key, value)
     {
-        const arrayIndex = this.hash(key); // 1. This will prevent it from creating at a index greater than array capacity
+        const arrayIndex = this.hash(key); // 1. This will prevent it from creating at a index greater than array capacity as anything % arrayCapacity > arrayCapacity itself
         if (this.#hashArray[arrayIndex] === undefined)
         {
             this.#hashArray[arrayIndex] = new LinkedList(new Node(key, value))
@@ -49,6 +48,14 @@ class HashMap
         this.#hashArray[arrayIndex].listNodeAppend(new Node(key, value));
     }
 
+    get(key){
+        const arrayIndex = this.hash(key); // there is an issue here if the arrayCapacity increases the calculation will screw up as a result i wont find the value even if it is present issue affects set() too
+        if (this.#hashArray[arrayIndex].contains(key)){
+            return this.#hashArray[arrayIndex].findNodeAtIndex(this.#hashArray[arrayIndex].find(key)).data;
+        }
+        return null;
+    }
+
     printPrivateVariable()
     {
         for (let index = 0; index < this.#arrayCapacity; index++)
@@ -61,13 +68,14 @@ class HashMap
     #checkLoad()
     {
         const maxEmptyIndexesAllowed = this.#arrayCapacity - Math.round(this.#arrayCapacity * this.#loadFactor);
+        const currentIndexesFilled = Math.round(this.#arrayCapacity * this.#loadFactor);
         let counter = 1;
         for (let index = 0; index < this.#arrayCapacity; index++)
         {
-            if (this.#hashArray[index] === undefined)
+            if (this.#hashArray[index] !== undefined)
             {
                 counter++;
-                if(counter > maxEmptyIndexesAllowed){
+                if(counter >= currentIndexesFilled){
                     return true;
                 }
             }
@@ -81,7 +89,10 @@ const stringMapTest = new HashMap();
 
 stringMapTest.set('carlos', 'I am the old value.')
 stringMapTest.set('loscar', 'I am the old value.')
-stringMapTest.set('mooka', 'I am the new value.')
+stringMapTest.set('carlos', 'I am the new value.')
+stringMapTest.set('mooka', 'I am merely a value.')
+
+console.log(stringMapTest.get('carlos'))
 
 // stringMapTest.printPrivateVariable();
 
@@ -91,7 +102,7 @@ stringMapTest.set('mooka', 'I am the new value.')
 // Use the following snippet whenever you access a bucket through an index. We want to throw an error if we try to access an out of bound index:
 
 
-// Issue 1 where to put this
+// 1 where to put this
 // if (index < 0 || index > arrayCapacity) {
 //   throw new Error("Trying to access index out of bound");
 // }
